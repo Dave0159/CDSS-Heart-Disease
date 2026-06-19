@@ -234,15 +234,10 @@ Kontribusi sangat disambut! Silakan ikuti langkah berikut:
 
 ---
 
-## 📄 Lisensi
-
-Proyek ini dilisensikan di bawah lisensi [MIT](LICENSE). Silakan gunakan, modifikasi, dan distribusikan secara bebas dengan tetap mencantumkan atribusi.
-
----
 
 <div align="center">
 
-Dibuat dengan ❤️ oleh [Dave0159](https://github.com/Dave0159)
+Dibuat dengan ❤️ oleh [David Lie Agatha](https://github.com/Dave0159)
 
 ⭐ Jika proyek ini bermanfaat, jangan lupa berikan bintang!
 
