@@ -182,12 +182,13 @@ CDSS-Heart-Disease/
 │
 ├── app.py                  # File utama aplikasi Streamlit
 ├── heart.csv               # Dataset UCI Heart Disease
-├── assets/
-│   └── screenshots/        # Screenshot antarmuka aplikasi
+├── asset/
+│   └── screenshot/        # Screenshot antarmuka aplikasi
 │       ├── eda.png
 │       ├── model_comparison.png
 │       ├── live_screening.png
 │       └── mass_prediction.png
+├── env
 └── README.md               # Dokumentasi proyek
 ```
 
