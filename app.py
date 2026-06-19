@@ -1,7 +1,12 @@
 import streamlit as st
 import pandas as pd
-import seaborn as sns
 import matplotlib.pyplot as plt
+
+try:
+    import seaborn as sns
+except ImportError:
+    sns = None
+
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
@@ -92,18 +97,39 @@ if df is not None:
         with col1:
             st.subheader("Distribusi Target")
             fig1, ax1 = plt.subplots(figsize=(5, 6))
-            sns.countplot(data=df, x='target', palette='Reds', ax=ax1)
-            ax1.set_xticklabels(['Sehat (0)', 'Berisiko (1)'])
+            if sns is not None:
+                sns.countplot(data=df, x='target', palette='Reds', ax=ax1)
+                ax1.set_xticklabels(['Sehat (0)', 'Berisiko (1)'])
+            else:
+                counts = df['target'].value_counts().sort_index()
+                labels = ['Sehat (0)', 'Berisiko (1)']
+                values = [counts.get(0, 0), counts.get(1, 0)]
+                ax1.bar(labels, values, color=['#f4a7a7', '#e63946'])
+            ax1.set_xlabel('Status Risiko')
+            ax1.set_ylabel('Jumlah')
             st.pyplot(fig1)
             
         with col2:
             st.subheader("Scatter Plot: Umur vs Detak Jantung Maks.")
             fig2, ax2 = plt.subplots(figsize=(8, 4))
-            sns.scatterplot(data=df, x='age', y='thalach', hue='target', palette=['#457b9d', '#e63946'], alpha=0.7, ax=ax2)
-            
-            handles, labels = ax2.get_legend_handles_labels()
-            ax2.legend(handles=handles, labels=['Sehat (0)', 'Berisiko (1)'], title="Status Risiko")
-            
+            if sns is not None:
+                sns.scatterplot(
+                    data=df,
+                    x='age',
+                    y='thalach',
+                    hue='target',
+                    palette=['#457b9d', '#e63946'],
+                    alpha=0.7,
+                    ax=ax2
+                )
+                handles, labels = ax2.get_legend_handles_labels()
+                ax2.legend(handles=handles, labels=['Sehat (0)', 'Berisiko (1)'], title="Status Risiko")
+            else:
+                color_map = {0: '#457b9d', 1: '#e63946'}
+                for status, color in color_map.items():
+                    subset = df[df['target'] == status]
+                    ax2.scatter(subset['age'], subset['thalach'], c=color, alpha=0.7, label='Sehat (0)' if status == 0 else 'Berisiko (1)')
+                ax2.legend(title="Status Risiko")
             ax2.set_xlabel("Umur (Tahun)")
             ax2.set_ylabel("Detak Jantung Maksimal (bpm)")
             st.pyplot(fig2)
@@ -160,7 +186,11 @@ if df is not None:
             
             # Mengatur ukuran figure agar tingginya pas dengan tumpukan metrik di kiri
             fig_feat, ax_feat = plt.subplots(figsize=(8, 6.5))
-            sns.barplot(data=feat_df, x="Bobot", y="Fitur Lengkap", palette="Reds_r", ax=ax_feat)
+            if sns is not None:
+                sns.barplot(data=feat_df, x="Bobot", y="Fitur Lengkap", palette="Reds_r", ax=ax_feat)
+            else:
+                ax_feat.barh(feat_df['Fitur Lengkap'], feat_df['Bobot'], color='#e63946')
+                ax_feat.invert_yaxis()
             ax_feat.set_ylabel("")
             st.pyplot(fig_feat)
         
