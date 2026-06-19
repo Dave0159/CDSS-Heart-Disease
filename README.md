@@ -60,7 +60,7 @@ Aplikasi ini memanfaatkan algoritma **Random Forest** dan **Support Vector Machi
 ### 1. Exploratory Data Analysis (EDA)
 Visualisasi distribusi data pasien dan hubungan antar variabel klinis.
 
-![EDA Screenshot](assets/screenshots/eda.png)
+![EDA Screenshot](asset/screenshot/eda.png)
 
 > Menampilkan distribusi kelas target (Sehat vs Berisiko) dan scatter plot Umur vs Detak Jantung Maksimal yang dipisahkan berdasarkan status risiko pasien.
 
@@ -69,7 +69,7 @@ Visualisasi distribusi data pasien dan hubungan antar variabel klinis.
 ### 2. Komparasi Model & Feature Importance
 Evaluasi performa dua model ML beserta visualisasi bobot fitur.
 
-![Model Comparison Screenshot](assets/screenshots/model_comparison.png)
+![Model Comparison Screenshot](asset/screenshot/model_comparison.png)
 
 > **Random Forest** mencapai F1-Score **0.8679** dengan akurasi **0.8478**, sedangkan **SVM** mencapai F1-Score **0.8517** dengan akurasi **0.8315**. Fitur paling berpengaruh adalah *Tipe Nyeri Dada*, *Kolesterol*, dan *Detak Jantung Maksimal*.
 
@@ -78,7 +78,7 @@ Evaluasi performa dua model ML beserta visualisasi bobot fitur.
 ### 3. Form Skrining Medis (Live Prediction)
 Input data klinis pasien secara manual untuk mendapatkan hasil prediksi instan.
 
-![Live Screening Screenshot](assets/screenshots/live_screening.png)
+![Live Screening Screenshot](asset/screenshot/live_screening.png)
 
 > Form ini mencakup 13 variabel klinis: Umur, Jenis Kelamin, Tipe Nyeri Dada, Tekanan Darah, Kolesterol, Gula Darah Puasa, Hasil ECG, Detak Jantung Maksimal, Nyeri Dada saat Olahraga, Depresi ST, Slope ST Segmen, Jumlah Pembuluh Darah, dan Thalassemia.
 
@@ -87,7 +87,7 @@ Input data klinis pasien secara manual untuk mendapatkan hasil prediksi instan.
 ### 4. Prediksi Massal via CSV
 Upload file CSV berisi data rekam medis banyak pasien sekaligus.
 
-![Mass Prediction Screenshot](assets/screenshots/mass_prediction.png)
+![Mass Prediction Screenshot](asset/screenshot/mass_prediction.png)
 
 > Mendukung upload file CSV hingga 200MB. Tersedia template CSV yang bisa diunduh agar format kolom sesuai standar model.
 
