@@ -91,22 +91,14 @@ if df is not None:
         
         with col1:
             st.subheader("Distribusi Target")
-<<<<<<< HEAD
             fig1, ax1 = plt.subplots(figsize=(5, 6))
-=======
-            fig1, ax1 = plt.subplots(figsize=(5, 4))
->>>>>>> 0e387f5a963c4ecb5d4a6bf212c9733e046f7703
             sns.countplot(data=df, x='target', palette='Reds', ax=ax1)
             ax1.set_xticklabels(['Sehat (0)', 'Berisiko (1)'])
             st.pyplot(fig1)
             
         with col2:
             st.subheader("Scatter Plot: Umur vs Detak Jantung Maks.")
-<<<<<<< HEAD
             fig2, ax2 = plt.subplots(figsize=(8, 4))
-=======
-            fig2, ax2 = plt.subplots(figsize=(8, 5))
->>>>>>> 0e387f5a963c4ecb5d4a6bf212c9733e046f7703
             sns.scatterplot(data=df, x='age', y='thalach', hue='target', palette=['#457b9d', '#e63946'], alpha=0.7, ax=ax2)
             
             handles, labels = ax2.get_legend_handles_labels()
