@@ -87,21 +87,30 @@ if df is not None:
 
     if menu == "Exploratory Data (EDA)":
         st.header("Exploratory Data Analysis")
-        tab1, tab2, tab3 = st.tabs(["Distribusi Data", "Matriks Korelasi", "Dataset Bersih"])
+        col1, col2 = st.columns([1, 2])
         
-        with tab1:
-            fig, ax = plt.subplots(figsize=(6, 4))
-            sns.countplot(data=df, x='target', palette='Reds', ax=ax)
-            ax.set_xticklabels(['Sehat (0)', 'Berisiko (1)'])
-            st.pyplot(fig)
+        with col1:
+            st.subheader("Distribusi Target")
+            fig1, ax1 = plt.subplots(figsize=(5, 4))
+            sns.countplot(data=df, x='target', palette='Reds', ax=ax1)
+            ax1.set_xticklabels(['Sehat (0)', 'Berisiko (1)'])
+            st.pyplot(fig1)
             
-        with tab2:
-            fig, ax = plt.subplots(figsize=(10, 6))
-            sns.heatmap(df.corr(), annot=False, cmap='RdBu_r', ax=ax)
-            st.pyplot(fig)
+        with col2:
+            st.subheader("Scatter Plot: Umur vs Detak Jantung Maks.")
+            fig2, ax2 = plt.subplots(figsize=(8, 5))
+            sns.scatterplot(data=df, x='age', y='thalach', hue='target', palette=['#457b9d', '#e63946'], alpha=0.7, ax=ax2)
             
-        with tab3:
-            st.dataframe(df.head(15), use_container_width=True)
+            handles, labels = ax2.get_legend_handles_labels()
+            ax2.legend(handles=handles, labels=['Sehat (0)', 'Berisiko (1)'], title="Status Risiko")
+            
+            ax2.set_xlabel("Umur (Tahun)")
+            ax2.set_ylabel("Detak Jantung Maksimal (bpm)")
+            st.pyplot(fig2)
+            
+        st.divider()
+        st.subheader("Dataset Bersih")
+        st.dataframe(df.head(15), use_container_width=True)
 
     elif menu == "Komparasi Model":
         st.header("Evaluasi & Signifikansi Fitur")
