@@ -87,21 +87,30 @@ if df is not None:
 
     if menu == "Exploratory Data (EDA)":
         st.header("Exploratory Data Analysis")
-        tab1, tab2, tab3 = st.tabs(["Distribusi Data", "Matriks Korelasi", "Dataset Bersih"])
+        col1, col2 = st.columns([1, 2])
         
-        with tab1:
-            fig, ax = plt.subplots(figsize=(6, 4))
-            sns.countplot(data=df, x='target', palette='Reds', ax=ax)
-            ax.set_xticklabels(['Sehat (0)', 'Berisiko (1)'])
-            st.pyplot(fig)
+        with col1:
+            st.subheader("Distribusi Target")
+            fig1, ax1 = plt.subplots(figsize=(5, 6))
+            sns.countplot(data=df, x='target', palette='Reds', ax=ax1)
+            ax1.set_xticklabels(['Sehat (0)', 'Berisiko (1)'])
+            st.pyplot(fig1)
             
-        with tab2:
-            fig, ax = plt.subplots(figsize=(10, 6))
-            sns.heatmap(df.corr(), annot=False, cmap='RdBu_r', ax=ax)
-            st.pyplot(fig)
+        with col2:
+            st.subheader("Scatter Plot: Umur vs Detak Jantung Maks.")
+            fig2, ax2 = plt.subplots(figsize=(8, 4))
+            sns.scatterplot(data=df, x='age', y='thalach', hue='target', palette=['#457b9d', '#e63946'], alpha=0.7, ax=ax2)
             
-        with tab3:
-            st.dataframe(df.head(15), use_container_width=True)
+            handles, labels = ax2.get_legend_handles_labels()
+            ax2.legend(handles=handles, labels=['Sehat (0)', 'Berisiko (1)'], title="Status Risiko")
+            
+            ax2.set_xlabel("Umur (Tahun)")
+            ax2.set_ylabel("Detak Jantung Maksimal (bpm)")
+            st.pyplot(fig2)
+            
+        st.divider()
+        st.subheader("Dataset Bersih")
+        st.dataframe(df.head(15), use_container_width=True)
 
     elif menu == "Komparasi Model":
         st.header("Evaluasi & Signifikansi Fitur")
@@ -118,37 +127,42 @@ if df is not None:
         metrics_rf = evaluate_model(model_rf, X_test_scaled, y_test)
         metrics_svm = evaluate_model(model_svm, X_test_scaled, y_test)
         
-        col1, col2 = st.columns(2)
-        with col1:
-            st.subheader("Random Forest")
+        # Membagi layar: Kiri (1 bagian) untuk metrik, Kanan (2.5 bagian) untuk grafik
+        col_kiri, col_kanan = st.columns([1, 2.5])
+        
+        with col_kiri:
+            st.subheader("Skor Model")
+            st.markdown("**Random Forest**")
             st.metric("F1-Score", f"{metrics_rf['F1-Score']:.4f}")
             st.metric("Akurasi", f"{metrics_rf['Akurasi']:.4f}")
             
-        with col2:
-            st.subheader("Support Vector Machine")
+            st.divider()
+            
+            st.markdown("**Support Vector Machine**")
             st.metric("F1-Score", f"{metrics_svm['F1-Score']:.4f}")
             st.metric("Akurasi", f"{metrics_svm['Akurasi']:.4f}")
 
-        st.divider()
-        st.subheader("Feature Importance (Random Forest)")
-        
-        kamus_fitur = {
-            'age': 'Umur', 'sex': 'Jenis Kelamin', 'cp': 'Tipe Nyeri Dada',
-            'trestbps': 'Tekanan Darah', 'chol': 'Kolesterol', 'fbs': 'Gula Darah Puasa',
-            'restecg': 'Hasil EKG', 'thalach': 'Detak Jantung Maks.', 'exang': 'Nyeri Dada Olahraga',
-            'oldpeak': 'Depresi ST', 'slope': 'Kemiringan Segmen ST', 'ca': 'Jml. Pembuluh Tersumbat',
-            'thal': 'Kelainan Aliran Darah'
-        }
-        
-        importance = model_rf.feature_importances_
-        feat_df = pd.DataFrame({"Fitur": X.columns, "Bobot": importance})
-        feat_df['Fitur Lengkap'] = feat_df['Fitur'].map(kamus_fitur)
-        feat_df = feat_df.sort_values(by="Bobot", ascending=False)
-        
-        fig_feat, ax_feat = plt.subplots(figsize=(10, 5))
-        sns.barplot(data=feat_df, x="Bobot", y="Fitur Lengkap", palette="Reds_r", ax=ax_feat)
-        ax_feat.set_ylabel("")
-        st.pyplot(fig_feat)
+        with col_kanan:
+            st.subheader("Feature Importance (Random Forest)")
+            
+            kamus_fitur = {
+                'age': 'Umur', 'sex': 'Jenis Kelamin', 'cp': 'Tipe Nyeri Dada',
+                'trestbps': 'Tekanan Darah', 'chol': 'Kolesterol', 'fbs': 'Gula Darah Puasa',
+                'restecg': 'Hasil EKG', 'thalach': 'Detak Jantung Maks.', 'exang': 'Nyeri Dada Olahraga',
+                'oldpeak': 'Depresi ST', 'slope': 'Kemiringan Segmen ST', 'ca': 'Jml. Pembuluh Tersumbat',
+                'thal': 'Kelainan Aliran Darah'
+            }
+            
+            importance = model_rf.feature_importances_
+            feat_df = pd.DataFrame({"Fitur": X.columns, "Bobot": importance})
+            feat_df['Fitur Lengkap'] = feat_df['Fitur'].map(kamus_fitur)
+            feat_df = feat_df.sort_values(by="Bobot", ascending=False)
+            
+            # Mengatur ukuran figure agar tingginya pas dengan tumpukan metrik di kiri
+            fig_feat, ax_feat = plt.subplots(figsize=(8, 6.5))
+            sns.barplot(data=feat_df, x="Bobot", y="Fitur Lengkap", palette="Reds_r", ax=ax_feat)
+            ax_feat.set_ylabel("")
+            st.pyplot(fig_feat)
         
         with st.expander("Lihat Penjelasan Detail Istilah Medis"):
             st.markdown("""
