@@ -1,4 +1,4 @@
-# 🫀 Sistem Pendukung Keputusan Klinis (CDSS)
+# Sistem Pendukung Keputusan Klinis (CDSS)
 ### Deteksi Dini Risiko Penyakit Jantung Terintegrasi Machine Learning
 
 <div align="center">
